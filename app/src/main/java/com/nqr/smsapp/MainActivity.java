@@ -18,10 +18,47 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
+
+
+
+
+
+import java.io.IOException;
+import java.util.Set;
+import java.util.UUID;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+
+
 public class MainActivity extends AppCompatActivity {
+
+
+
+    String address = null , name=null;
+    BluetoothAdapter myBluetooth = null;
+    BluetoothSocket btSocket = null;
+    Set<BluetoothDevice> pairedDevices;
+    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
+
+
+
+
+
 
     ArrayList<String> smsMessagesList = new ArrayList<>();
     ListView messages;
@@ -35,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
 
     public static MainActivity instance() {
+
         return inst;
     }
 
@@ -58,7 +96,93 @@ public class MainActivity extends AppCompatActivity {
             refreshSmsInbox();
         }
 
+
+
+
+        try {setw();} catch (Exception e) {}
+
+
+
+
     }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setw() throws IOException
+    {
+
+        bluetooth_connect_device();
+
+
+
+
+
+    }
+
+
+
+
+    private void led_on_off(String i)
+    {
+        try
+        {
+            if (btSocket!=null)
+            {
+
+                btSocket.getOutputStream().write(i.toString().getBytes());
+            }
+
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
+
+
+
+
+    private void bluetooth_connect_device() throws IOException
+    {
+        try
+        {
+            myBluetooth = BluetoothAdapter.getDefaultAdapter();
+            address = myBluetooth.getAddress();
+            pairedDevices = myBluetooth.getBondedDevices();
+            if (pairedDevices.size()>0)
+            {
+                for(BluetoothDevice bt : pairedDevices)
+                {
+                    address=bt.getAddress().toString();name = bt.getName().toString();
+                    Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+        }
+        catch(Exception we){}
+        myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
+        BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
+        btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+        btSocket.connect();
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onStart() {
@@ -68,9 +192,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    static boolean f_b_state= false;
+
     public void updateInbox(final String smsMessage) {
         arrayAdapter.insert(smsMessage, 0);
         arrayAdapter.notifyDataSetChanged();
+
+        if(f_b_state) {
+
+            led_on_off("f");
+
+            f_b_state=false;
+
+        }else{
+
+            led_on_off("b");
+
+            f_b_state=true;
+        }
+
     }
 
     public void onSendClick(View view) {
