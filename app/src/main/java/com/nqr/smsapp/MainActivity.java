@@ -198,18 +198,22 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter.insert(smsMessage, 0);
         arrayAdapter.notifyDataSetChanged();
 
-        if(f_b_state) {
 
-            led_on_off("f");
+        String string = smsMessage;
+        String[] parts = string.split("\n");
+        String part1 = parts[0]; // 004
+        String part2 = parts[1]; // 034556
 
-            f_b_state=false;
+        led_on_off(part2);
 
-        }else{
+        //if(f_b_state) {
+        //    led_on_off("f");
+        //    f_b_state=false;
+        //}else{
+        //    led_on_off("b");
+        //    f_b_state=true;
+        //}
 
-            led_on_off("b");
-
-            f_b_state=true;
-        }
 
     }
 
