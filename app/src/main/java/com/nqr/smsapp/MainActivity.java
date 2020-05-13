@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -47,17 +51,11 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
 
-
-    String address = null , name=null;
+    String address = null, name = null;
     BluetoothAdapter myBluetooth = null;
     BluetoothSocket btSocket = null;
     Set<BluetoothDevice> pairedDevices;
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
-
-
-
-
 
 
     ArrayList<String> smsMessagesList = new ArrayList<>();
@@ -99,73 +97,61 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        try {setw();} catch (Exception e) {}
+        try {
+            URL url_g = new URL("http://www.google.com/");
+            new DownloadFilesTask().execute(url_g);
+        } catch(MalformedURLException e) {
+            //Do something with the exception.
+        }
 
 
+
+
+
+
+//        try {
+  //          setw();
+    //    } catch (Exception e) {
+      //  }
 
 
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setw() throws IOException
-    {
+    private void setw() throws IOException {
 
         bluetooth_connect_device();
 
 
+    }
 
+
+    private void led_on_off(String i) {
+
+
+        new DownloadFilesTask2().execute(i);
 
 
     }
 
 
-
-
-    private void led_on_off(String i)
-    {
-        try
-        {
-            if (btSocket!=null)
-            {
-
-                btSocket.getOutputStream().write(i.toString().getBytes());
-            }
-
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(),e.getMessage(), Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-
-
-
-
-
-
-    private void bluetooth_connect_device() throws IOException
-    {
-        try
-        {
+    private void bluetooth_connect_device() throws IOException {
+        try {
             myBluetooth = BluetoothAdapter.getDefaultAdapter();
             address = myBluetooth.getAddress();
             pairedDevices = myBluetooth.getBondedDevices();
-            if (pairedDevices.size()>0)
-            {
-                for(BluetoothDevice bt : pairedDevices)
-                {
-                    address=bt.getAddress().toString();name = bt.getName().toString();
-                    Toast.makeText(getApplicationContext(),"Connected", Toast.LENGTH_SHORT).show();
+            if (pairedDevices.size() > 0) {
+                for (BluetoothDevice bt : pairedDevices) {
+                    address = bt.getAddress().toString();
+                    name = bt.getName().toString();
+                    //Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
 
                 }
             }
 
+        } catch (Exception we) {
         }
-        catch(Exception we){}
         myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
         BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
         btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
@@ -173,15 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -192,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    static boolean f_b_state= false;
+    static boolean f_b_state = false;
 
     public void updateInbox(final String smsMessage) {
         arrayAdapter.insert(smsMessage, 0);
@@ -213,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
         //    led_on_off("b");
         //    f_b_state=true;
         //}
-
 
 
     }
@@ -335,4 +311,81 @@ public class MainActivity extends AppCompatActivity {
         return Name;
 
     }
+
+
+    private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+        // Do the long-running work in here
+        protected Long doInBackground(URL... urls) {
+
+            try {
+                bluetooth_connect_device();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if (isCancelled()) Long.valueOf(0);
+            return Long.valueOf(0);
+        }
+        // This is called each time you call publishProgress()
+        protected void onProgressUpdate(Integer... progress) {
+            setProgressPercent(progress[0]);
+        }
+        // This is called when doInBackground() is finished
+        protected void onPostExecute(Long result) {
+            showNotification("Downloaded " + result + " bytes");
+        }
+    }
+
+    private class DownloadFilesTask2 extends AsyncTask<String, Integer, Long> {
+        // Do the long-running work in here
+        protected Long doInBackground(String... strings) {
+
+String i= strings[0];
+
+
+            try {
+                if (btSocket != null) {
+
+                    btSocket.getOutputStream().write(i.toString().getBytes());
+                }
+
+            } catch (Exception e) {
+
+
+            }
+
+
+
+
+
+
+            if (isCancelled()) Long.valueOf(0);
+            return Long.valueOf(0);
+        }
+        // This is called each time you call publishProgress()
+        protected void onProgressUpdate(Integer... progress) {
+            setProgressPercent2(progress[0]);
+        }
+        // This is called when doInBackground() is finished
+        protected void onPostExecute(Long result) {
+            showNotification2("Downloaded " + result + " bytes");
+        }
+    }
+
+    private void showNotification(String s) {
+        int i=1;
+    }
+    private void setProgressPercent(Integer progress) {
+        int i=1;
+    }
+    private void showNotification2(String s) {
+        int i=1;
+    }
+    private void setProgressPercent2(Integer progress) {
+        int i=1;
+    }
+
+
+    
 }

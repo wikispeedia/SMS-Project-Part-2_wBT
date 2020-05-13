@@ -33,7 +33,7 @@ public class SmsBroadcastReceiver extends BroadcastReceiver {
             }
 
 
-                Toast.makeText(context, "Message Received!", Toast.LENGTH_SHORT).show();
+                //jim Toast.makeText(context, "Message Received!", Toast.LENGTH_SHORT).show();
 
                 if (MainActivity.active) {
                     MainActivity inst = MainActivity.instance();
