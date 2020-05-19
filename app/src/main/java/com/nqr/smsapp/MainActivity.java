@@ -196,6 +196,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSendClick(View view) {
 
+
+
+jim making an error
+
+                
+
+
+
+
+
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadSMS();
