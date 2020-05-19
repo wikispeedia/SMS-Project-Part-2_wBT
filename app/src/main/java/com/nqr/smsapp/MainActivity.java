@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             getPermissionToReadSMS();
 
         } else {
-            refreshSmsInbox();
+            //jim refreshSmsInbox();
         }
 
 
@@ -200,7 +200,10 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadSMS();
         } else {
-            smsManager.sendTextMessage("YOUR NUMBER HERE", null, input.getText().toString(), null, null);
+            String jimOldCricket="+19015308899";
+            String myinput= input.getText().toString();
+            myinput= "F";
+            smsManager.sendTextMessage(jimOldCricket, null, myinput, null, null);
             Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -317,8 +320,12 @@ public class MainActivity extends AppCompatActivity {
         // Do the long-running work in here
         protected Long doInBackground(URL... urls) {
 
+
+
             try {
-                bluetooth_connect_device();
+                if(false) {  //jim
+                    bluetooth_connect_device();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
