@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../SMS-Project-Part-2_wBT_BTworks_ThisGoesInOldCricketPhone.iml" filepath="$PROJECT_DIR$/../SMS-Project-Part-2_wBT_BTworks_ThisGoesInOldCricketPhone.iml" group="SMS-Project-Part-2_wBT_BTworks_ThisGoesInOldCricketPhone" />
+      <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" group="SMS-Project-Part-2_wBT_BTworks_ThisGoesInOldCricketPhone/app" />
+    </modules>
+  </component>
+</project>

@@ -196,17 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSendClick(View view) {
 
-
-
-jim making an error
-
-                
-
-
-
-
-
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReadSMS();
@@ -217,6 +206,7 @@ jim making an error
             smsManager.sendTextMessage(jimOldCricket, null, myinput, null, null);
             Toast.makeText(this, "Message sent!", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void getPermissionToReadSMS() {
@@ -254,7 +244,7 @@ jim making an error
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
-                refreshSmsInbox();
+                //jim refreshSmsInbox();
             } else {
                 Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
             }
@@ -267,7 +257,7 @@ jim making an error
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
-                refreshSmsInbox();
+                //jim refreshSmsInbox();
             } else {
                 Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
             }
@@ -334,7 +324,7 @@ jim making an error
 
 
             try {
-                if(false) {  //jim
+                if(true) {  //jim
                     bluetooth_connect_device();
                 }
             } catch (IOException e) {
@@ -371,6 +361,7 @@ String i= strings[0];
             } catch (Exception e) {
 
 
+                int ii=11;
             }
 
 
